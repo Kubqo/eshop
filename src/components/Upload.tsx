@@ -2,7 +2,6 @@ import { getDownloadURL, ref } from "@firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { FormEvent, useEffect, useState } from "react";
 import { productsCollection, storage } from "../utils/firebase";
-import { signOut } from "../utils/firebase";
 import { Button, Grid, IconButton, TextField } from "@mui/material";
 import useField from "../hooks/useField";
 import { addDoc, Timestamp } from "@firebase/firestore";
@@ -57,9 +56,6 @@ const Upload = () => {
 
   return (
     <>
-      <Button variant="contained" color="error" onClick={signOut}>
-        Odhlásiť sa
-      </Button>
       <Grid
         component="form"
         onSubmit={async (e: FormEvent) => {

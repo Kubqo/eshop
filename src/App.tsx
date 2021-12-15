@@ -1,20 +1,15 @@
-import useLoggedInUser from "./hooks/useLoggedInUser";
-import Login from "./components/Login";
-import Upload from "./components/Upload";
+import { ThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
+import Router from "./routes/Router";
+import theme from "./utils/theme";
 
 function App() {
-  const user = useLoggedInUser();
-
   return (
-    <>
-      {!user ? (
-        <Login />
-      ) : (
-        <>
-          <Upload />
-        </>
-      )}
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+
+      <Router />
+    </ThemeProvider>
   );
 }
 

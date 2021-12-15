@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "Mulish Regular";
+  src: url("Mulish-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mulish SemiBold";
+  src: url("Mulish-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mulish Bold";
+  src: url("Mulish-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mulish ExtraBold";
+  src: url("Mulish-ExtraBold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Logo";
+  src: url("Estonia-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
