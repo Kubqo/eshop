@@ -1,16 +1,28 @@
 import { getDownloadURL, ref } from "@firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { FormEvent, useEffect, useState } from "react";
-import { productsCollection, storage } from "../utils/firebase";
+import { generateId, productsDocument, storage } from "../utils/firebase";
 import { Button, Grid, IconButton, TextField } from "@mui/material";
 import useField from "../hooks/useField";
-import { addDoc, Timestamp } from "@firebase/firestore";
+import { setDoc, Timestamp } from "@firebase/firestore";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
+import { Sizes } from "../common/enums";
+import SizesSelect from "../components/SizesSelect";
 
 const Upload = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [imagesUrls, setImagesUrls] = useState<string[]>([]);
-  const [upload, setUpload] = useState<boolean>(false);
+
+  //form
+  const [name, setName, nameProps] = useField("name", true);
+  const [description, setDescription, descriptionProps] = useField(
+    "description",
+    false
+  );
+  const [price, setPrice, priceProps] = useField("price", true);
+  const [submitError, setSubmitError] = useState<string>();
+  const [size, setSize] = useState<Sizes>(Sizes.SMALL);
 
   const onChange = (e: any) => {
     setFiles((files) => [...files, e.target.files[0]]);
@@ -19,40 +31,55 @@ const Upload = () => {
   const onSubmit = async () => {
     files.map((file) => {
       const imageRef = ref(storage, file!.name);
+      console.log(imageRef);
 
-      uploadBytes(imageRef, file!).then((snapshot) => {
+      const uploadImageToast = uploadBytes(imageRef, file!).then((snapshot) => {
         getDownloadURL(imageRef).then((downloadURL) => {
           setImagesUrls((images) => [...images, downloadURL]);
         });
       });
+
+      toast.promise(uploadImageToast, {
+        pending: `Nahrávam fotku ${file!.name}`,
+        success: "Fotka nahraná 👌",
+        error: `Fotku ${file!.name} sa nepodarilo nahrať 🤯`,
+      });
     });
-    setUpload(true);
   };
 
   useEffect(() => {
-    if (upload === true && imagesUrls.length === files.length) {
+    if (files.length > 0 && imagesUrls.length === files.length) {
       try {
-        addDoc(productsCollection, {
+        const newId = generateId();
+        const addProduct = setDoc(productsDocument(newId), {
+          id: newId,
           name: name,
           description: description,
           images: imagesUrls,
           price: price,
           time: Timestamp.now(),
+          status: "available",
+          size: size,
+        });
+
+        toast.promise(addProduct, {
+          pending: "Nahrávam produkt",
+          success: "Produkt nahraný 👌",
+          error: "Produkt sa nepodarilo nahrať 🤯",
         });
       } catch (err) {
         setSubmitError(
           (err as { message?: string })?.message ?? "Unknown error occurred"
         );
       }
+      setFiles([]);
+      setImagesUrls([]);
+      setName("");
+      setDescription("");
+      setPrice("");
     }
-    setUpload(false);
     // eslint-disable-next-line
-  }, [files, imagesUrls, upload]);
-
-  const [name, nameProps] = useField("name", true);
-  const [description, descriptionProps] = useField("description", false);
-  const [price, priceProps] = useField("price", true);
-  const [submitError, setSubmitError] = useState<string>();
+  }, [files, imagesUrls]);
 
   return (
     <>
@@ -83,11 +110,13 @@ const Upload = () => {
         >
           <TextField sx={{ width: 300, mt: 5 }} label="Názov" {...nameProps} />
           <TextField
+            multiline
             sx={{ width: 300, mt: 5 }}
             label="Popis"
             {...descriptionProps}
           />
           <TextField sx={{ width: 300, mt: 5 }} label="Cena" {...priceProps} />
+          <SizesSelect size={size} setSize={setSize} />
 
           <Button
             sx={{ mt: 5 }}
@@ -101,9 +130,6 @@ const Upload = () => {
         </Grid>
         <Grid
           sx={{
-            // border: "1px dashed black",
-            // maxHeight: "90vh",
-            // overflow: "auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

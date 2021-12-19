@@ -4,6 +4,7 @@ import usePageTitle from "../hooks/usePageTitle";
 
 const HomePage = () => {
   usePageTitle("Domov");
+
   return (
     <>
       <Typography sx={{ mt: 5 }} variant="h1">

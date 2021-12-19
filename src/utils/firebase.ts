@@ -12,9 +12,9 @@ import {
   doc,
   DocumentReference,
   getFirestore,
-  Timestamp,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { Tree } from "../common/types";
 
 // Initialize Firebase
 const firebaseApp = initializeApp({
@@ -46,19 +46,20 @@ const db = getFirestore();
 
 export const storage = getStorage(firebaseApp);
 
-// Reviews collection
-export type Tree = {
-  name: string;
-  description?: string;
-  images: string[];
-  price: string;
-  time: Timestamp;
-};
-
 export const productsCollection = collection(
   db,
   "products"
 ) as CollectionReference<Tree>;
 
-export const productsDocument = () =>
-  doc(db, "products") as DocumentReference<Tree>;
+export const productsDocument = (id: string) =>
+  doc(db, "products", id) as DocumentReference<Tree>;
+
+export const generateId = () => {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let autoId = "";
+  for (let i = 0; i < 20; i++) {
+    autoId += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return autoId;
+};

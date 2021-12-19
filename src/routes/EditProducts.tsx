@@ -1,13 +1,14 @@
-import { Grid, Typography } from "@mui/material";
+/* eslint-disable react/jsx-no-undef */
+import { Grid } from "@mui/material";
 import usePageTitle from "../hooks/usePageTitle";
 import { productsCollection } from "../utils/firebase";
 import { getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import Loading from "../components/Loading";
-import Product from "../components/Product";
+import ProductEdit from "../components/ProductEdit";
 import { Tree } from "../common/types";
 
-const Products = () => {
+const EditProducts = () => {
   usePageTitle("Ponuka");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<Tree[]>([]);
@@ -30,9 +31,6 @@ const Products = () => {
 
   return (
     <>
-      <Typography sx={{ mt: 12, mb: 4 }} variant="h4">
-        Aktuálna ponuka:
-      </Typography>
       <Grid sx={{ flexGrow: 1 }} container spacing={2}>
         <Grid item xs={12}>
           <Grid container justifyContent="center" spacing={2}>
@@ -43,7 +41,7 @@ const Products = () => {
                 key={item.name}
                 item
               >
-                <Product item={item} />
+                <ProductEdit item={item} products={products} setProducts={setProducts} />
               </Grid>
             ))}
           </Grid>
@@ -53,4 +51,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default EditProducts;

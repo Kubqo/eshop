@@ -6,7 +6,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import { signOut } from "../utils/firebase";
 
@@ -14,9 +14,6 @@ import theme from "../utils/theme";
 
 const AppBar = () => {
   const user = useLoggedInUser();
-
-  const location = useLocation();
-  console.log(location.pathname);
 
   return (
     <AppBarMui sx={{ backgroundColor: theme.palette.secondary.dark }}>
@@ -32,23 +29,25 @@ const AppBar = () => {
             Šidíková
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+
           <Button component={Link} to="/">
             Domov
           </Button>
-          {location.pathname !== "/login" && (
+          <Button component={Link} to="/ponuka">
+            Ponuka
+          </Button>
+          <Button component={Link} to="/kontakt">
+            Kontakt
+          </Button>
+
+          {user && (
             <>
-              <Button component={Link} to="/ponuka">
-                Ponuka
+              <Button component={Link} to="/newProduct">
+                Nahrať nový produkt
               </Button>
-              <Button component={Link} to="/kontakt">
-                Kontakt
+              <Button component={Link} to="/editProducts">
+                Upraviť produkty
               </Button>
-            </>
-          )}
-          {location.pathname === "/login" && user && (
-            <>
-              <Button>Nahrať nový produkt</Button>
-              <Button>Upraviť produkty</Button>
               <Button variant="contained" color="error" onClick={signOut}>
                 Odhlásiť sa
               </Button>
