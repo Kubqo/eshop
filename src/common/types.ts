@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import { Sizes } from "./enums";
+import { Sizes, Status, Types } from "./enums";
 
 export type Tree = {
   id: string;
@@ -8,8 +8,11 @@ export type Tree = {
   images: string[];
   price: string;
   time: Timestamp;
-  status: "sold" | "available";
+  status: State;
   size: Sizes;
+  type: Type;
 };
 
 export type Size = Sizes.SMALL | Sizes.MEDIUM | Sizes.BIG;
+export type Type = Types.TREE | Types.JAWELERY | Types.OTHER;
+export type State = Status.AVAILABLE | Status.SOLD;

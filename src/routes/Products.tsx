@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import usePageTitle from "../hooks/usePageTitle";
 import { productsCollection } from "../utils/firebase";
 import { getDocs } from "firebase/firestore";
@@ -6,12 +6,17 @@ import { useState, useEffect } from "react";
 import Loading from "../components/Loading";
 import Product from "../components/Product";
 import { Tree } from "../common/types";
+import ProductsFilter from "../components/ProductsFilter";
+import { Types } from "../common/enums";
+import useWindowDimensions from "../hooks/windowDimensions";
 
 const Products = () => {
   usePageTitle("Ponuka");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<Tree[]>([]);
-
+  const [filterProducts, setFilterProducts] = useState<Types>(Types.TREE);
+  const { height } = useWindowDimensions();
+  console.log(height);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -24,32 +29,84 @@ const Products = () => {
     fetchData();
   }, []);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         height: height - 140,
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //       }}
+  //     >
+  //       <Loading />
+  //     </Box>
+  //   );
+  // }
 
   return (
-    <>
-      <Typography sx={{ mt: 12, mb: 4 }} variant="h4">
-        Aktuálna ponuka:
-      </Typography>
-      <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justifyContent="center" spacing={2}>
-            {products.map((item) => (
-              <Grid
-                sx={{ display: "flex" }}
-                justifyContent="center"
-                key={item.name}
-                item
-              >
-                <Product item={item} />
+    <Box
+      sx={{
+        height: height - 140,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <ProductsFilter
+        filterProducts={filterProducts}
+        setFilterProducts={setFilterProducts}
+      />
+      {isLoading ? (
+        <Box
+          sx={{
+            height: height - 140,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Loading />
+        </Box>
+      ) : (
+        <>
+          {products.filter((p) => p.type === filterProducts).length === 0 ? (
+            <Box
+              sx={{
+                height: height - 140,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Typography>Žiadne vyhovujúce produkty :(</Typography>
+            </Box>
+          ) : (
+            <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+              <Grid item xs={12}>
+                <Grid container justifyContent="center" spacing={2}>
+                  {products.map(
+                    (item) =>
+                      item.type === filterProducts && (
+                        <Grid
+                          sx={{ display: "flex" }}
+                          justifyContent="center"
+                          key={item.name}
+                          item
+                        >
+                          <Product item={item} />
+                        </Grid>
+                      )
+                  )}
+                </Grid>
               </Grid>
-            ))}
-          </Grid>
-        </Grid>
-      </Grid>
-    </>
+            </Grid>
+          )}
+        </>
+      )}
+    </Box>
   );
 };
 

@@ -4,6 +4,7 @@ import {
   ImageListItem,
   ImageListItemBar,
   Modal,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
@@ -11,6 +12,7 @@ import { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Tree } from "../common/types";
+import theme from "../utils/theme";
 
 type Props = {
   item: Tree;
@@ -19,7 +21,7 @@ type Props = {
 const Product = ({ item }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [activePhoto, setActivePhoto] = useState<number>(0);
-
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -66,7 +68,7 @@ const Product = ({ item }: Props) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#3b474e",
+              backgroundColor: theme.palette.primary.main,
               width: "60%",
             }}
           >
@@ -138,8 +140,16 @@ const Product = ({ item }: Props) => {
         </Box>
       </Modal>
 
-      <ImageListItem sx={{ width: 200 }} key={item.name}>
-        <img src={item.images[0]} alt={`${item.name}`} loading="lazy" />
+      <ImageListItem
+        sx={{ width: 200, display: isLoaded ? "block" : "none" }}
+        key={item.name}
+      >
+        <img
+          src={item.images[0]}
+          alt={`${item.name}`}
+          loading="lazy"
+          onLoad={() => setIsLoaded(true)}
+        />
         <ImageListItemBar
           title={item.name}
           actionIcon={
@@ -153,6 +163,10 @@ const Product = ({ item }: Props) => {
           }
         />
       </ImageListItem>
+
+      {!isLoaded && (
+        <Skeleton variant="rectangular" width={200} height={266.66} />
+      )}
     </>
   );
 };

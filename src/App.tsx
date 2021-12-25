@@ -4,7 +4,8 @@ import Router from "./routes/Router";
 import theme from "./utils/theme";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-function App() {
+
+const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -22,6 +23,6 @@ function App() {
       />
     </ThemeProvider>
   );
-}
+};
 
 export default App;

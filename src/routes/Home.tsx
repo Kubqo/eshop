@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 import usePageTitle from "../hooks/usePageTitle";
 
@@ -6,7 +6,7 @@ const HomePage = () => {
   usePageTitle("Domov");
 
   return (
-    <>
+    <Container sx={{ mt: 10, textAlign: "center" }} maxWidth="lg">
       <Typography sx={{ mt: 5 }} variant="h1">
         Vitajte na stránke
       </Typography>
@@ -35,7 +35,7 @@ const HomePage = () => {
         with desktop publishing software like Aldus PageMaker including versions
         of Lorem Ipsum.
       </Typography>
-    </>
+    </Container>
   );
 };
 

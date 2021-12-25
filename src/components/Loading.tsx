@@ -4,7 +4,9 @@ import Box from "@mui/material/Box";
 
 const Loading = () => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+    >
       <CircularProgress color="success" />
     </Box>
   );

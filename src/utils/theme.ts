@@ -1,11 +1,13 @@
 import { createTheme } from "@mui/material";
 
+const palette = {
+  primary: { main: "#23282d", light: "#ffffff" },
+  secondary: { main: "#ffc742" },
+  mode: "light",
+} as const;
+
 const theme = createTheme({
-  palette: {
-    primary: { main: "#F7F9FB", light: "#687864" },
-    secondary: { main: "#5085A5", dark: "#31708E", light: "#8FC1E3" },
-    mode: "light",
-  },
+  palette,
   typography: {
     fontFamily: `Mulish Regular`,
     h1: {
@@ -33,6 +35,38 @@ const theme = createTheme({
     },
     body2: {
       fontSize: 14,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: palette.primary.light,
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: palette.primary.light,
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          color: "inherit",
+          textDecoration: "inherit",
+          cursor: "pointer",
+          ":hover": {
+            color: "white",
+            backgroundColor: palette.primary.main,
+            "& .MuiListItemIcon-root": {
+              color: "white",
+            },
+          },
+        },
+      },
     },
   },
 });

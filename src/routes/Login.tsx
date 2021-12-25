@@ -10,8 +10,8 @@ import { signIn } from "../utils/firebase";
 const Login = () => {
   const user = useLoggedInUser();
 
-  const [email, setEmail, usernameProps] = useField("email", true);
-  const [password, setPassword, passwordProps] = useField("password", true);
+  const [email, usernameProps] = useField("email", true);
+  const [password, passwordProps] = useField("password", true);
   const [submitError, setSubmitError] = useState<string>();
 
   if (user) {

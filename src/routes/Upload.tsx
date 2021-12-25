@@ -7,22 +7,24 @@ import useField from "../hooks/useField";
 import { setDoc, Timestamp } from "@firebase/firestore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
-import { Sizes } from "../common/enums";
+import { Sizes, Status, Types } from "../common/enums";
 import SizesSelect from "../components/SizesSelect";
+import TypesSelect from "../components/TypesSelect";
 
 const Upload = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [imagesUrls, setImagesUrls] = useState<string[]>([]);
 
   //form
-  const [name, setName, nameProps] = useField("name", true);
-  const [description, setDescription, descriptionProps] = useField(
+  const [name, nameProps, setName] = useField("name", true);
+  const [description, descriptionProps, setDescription] = useField(
     "description",
     false
   );
-  const [price, setPrice, priceProps] = useField("price", true);
+  const [price, priceProps, setPrice] = useField("price", true);
   const [submitError, setSubmitError] = useState<string>();
   const [size, setSize] = useState<Sizes>(Sizes.SMALL);
+  const [type, setType] = useState<Types>(Types.TREE);
 
   const onChange = (e: any) => {
     setFiles((files) => [...files, e.target.files[0]]);
@@ -58,8 +60,9 @@ const Upload = () => {
           images: imagesUrls,
           price: price,
           time: Timestamp.now(),
-          status: "available",
+          status: Status.AVAILABLE,
           size: size,
+          type: type,
         });
 
         toast.promise(addProduct, {
@@ -82,93 +85,93 @@ const Upload = () => {
   }, [files, imagesUrls]);
 
   return (
-    <>
+    <Grid
+      component="form"
+      onSubmit={async (e: FormEvent) => {
+        e.preventDefault();
+        try {
+          await onSubmit();
+        } catch (err) {
+          setSubmitError(
+            (err as { message?: string })?.message ?? "Unknown error occurred"
+          );
+        }
+      }}
+      container
+      spacing={2}
+      sx={{ my: 5 }}
+    >
       <Grid
-        component="form"
-        onSubmit={async (e: FormEvent) => {
-          e.preventDefault();
-          try {
-            await onSubmit();
-          } catch (err) {
-            setSubmitError(
-              (err as { message?: string })?.message ?? "Unknown error occurred"
-            );
-          }
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
         }}
-        container
-        spacing={2}
+        item
+        xs={6}
       >
-        <Grid
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-          item
-          xs={6}
-        >
-          <TextField sx={{ width: 300, mt: 5 }} label="Názov" {...nameProps} />
-          <TextField
-            multiline
-            sx={{ width: 300, mt: 5 }}
-            label="Popis"
-            {...descriptionProps}
-          />
-          <TextField sx={{ width: 300, mt: 5 }} label="Cena" {...priceProps} />
-          <SizesSelect size={size} setSize={setSize} />
+        <TextField sx={{ width: 300, mt: 5 }} label="Názov" {...nameProps} />
+        <TextField
+          multiline
+          sx={{ width: 300, mt: 5 }}
+          label="Popis"
+          {...descriptionProps}
+        />
+        <TextField sx={{ width: 300, mt: 5 }} label="Cena" {...priceProps} />
+        <TypesSelect type={type} setType={setType} />
+        {type === Types.TREE && <SizesSelect size={size} setSize={setSize} />}
 
-          <Button
-            sx={{ mt: 5 }}
-            type="submit"
-            color="success"
-            variant="contained"
-          >
-            Nahrať
-          </Button>
-          {submitError}
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-          item
-          xs={6}
+        <Button
+          sx={{ mt: 5 }}
+          type="submit"
+          color="success"
+          variant="contained"
         >
-          {Array.from(Array(files.length + 1).keys()).map((num) =>
-            num < files.length ? (
-              <>
-                <img
-                  key={num}
-                  style={{ width: 250 }}
-                  src={URL.createObjectURL(files[num])}
-                  alt={files[num].name}
-                />
-                <IconButton
-                  onClick={() =>
-                    setFiles(
-                      files.filter((file) => file.name !== files[num].name)
-                    )
-                  }
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            ) : (
-              <TextField
-                key={num}
-                style={{ marginTop: 10 }}
-                type="file"
-                onChange={onChange}
-              />
-            )
-          )}
-        </Grid>
+          Nahrať
+        </Button>
+        {submitError}
       </Grid>
-    </>
+      <Grid
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+        item
+        xs={6}
+      >
+        {Array.from(Array(files.length + 1).keys()).map((num) =>
+          num < files.length ? (
+            <>
+              <img
+                key={num}
+                style={{ width: 250 }}
+                src={URL.createObjectURL(files[num])}
+                alt={files[num].name}
+              />
+              <IconButton
+                onClick={() =>
+                  setFiles(
+                    files.filter((file) => file.name !== files[num].name)
+                  )
+                }
+              >
+                <DeleteIcon />
+              </IconButton>
+            </>
+          ) : (
+            <TextField
+              key={num}
+              style={{ marginTop: 10 }}
+              type="file"
+              onChange={onChange}
+            />
+          )
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

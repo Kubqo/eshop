@@ -9,7 +9,6 @@ const useField = (id: string, required?: boolean, defaultValue?: string) => {
   return [
     // Current value for convenient access
     value,
-    setValue,
     // Props for the TextField
     {
       id,
@@ -24,6 +23,8 @@ const useField = (id: string, required?: boolean, defaultValue?: string) => {
       error,
       helperText: error ? "Required" : undefined,
     },
+
+    setValue,
   ] as const;
 };
 

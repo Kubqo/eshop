@@ -7,22 +7,24 @@ import {
   Link,
   Modal,
   TextField,
-  Typography,
 } from "@mui/material";
 import { productsDocument, storage } from "../utils/firebase";
 import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { deleteDoc, setDoc } from "firebase/firestore";
-import { Tree } from "../common/types";
+import { State, Tree } from "../common/types";
 import { deleteObject, ref } from "firebase/storage";
 import { toast } from "react-toastify";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageIcon from "@mui/icons-material/Image";
 import Product from "./Product";
-import { Sizes } from "../common/enums";
+import { Sizes, Types } from "../common/enums";
 import useField from "../hooks/useField";
 import SizesSelect from "./SizesSelect";
+import TypesSelect from "./TypesSelect";
+import StatusSelect from "./StatusSelect";
+import theme from "../utils/theme";
 
 type Props = {
   item: Tree;
@@ -34,15 +36,16 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [imagesList, setImagesList] = useState<string[]>([]);
 
-  const [name, setName, nameProps] = useField("name", true, item.name);
-  const [description, setDescription, descriptionProps] = useField(
+  const [name, nameProps] = useField("name", true, item.name);
+  const [description, descriptionProps] = useField(
     "description",
     false,
     item.description
   );
-  const [price, setPrice, priceProps] = useField("price", true, item.price);
+  const [price, priceProps] = useField("price", true, item.price);
   const [size, setSize] = useState<Sizes>(item.size);
-  const [status, setStatus] = useState<"sold" | "available">(item.status);
+  const [type, setType] = useState<Types>(item.type);
+  const [status, setStatus] = useState<State>(item.status);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -83,6 +86,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
       time: item.time,
       status: status,
       size: size,
+      type: type,
     });
 
     toast.promise(updateItem, {
@@ -145,7 +149,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#3b474e",
+              // backgroundColor: "#3b474e",
             }}
           >
             <DragDropContext onDragEnd={onDragEnd}>
@@ -155,7 +159,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={{
-                      backgroundColor: "lightgrey",
+                      backgroundColor: theme.palette.primary.main,
                       padding: 8,
                       height: "100%",
                       overflowY: "scroll",
@@ -178,7 +182,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
                                 m: 2,
                                 backgroundColor: snapshot.isDragging
                                   ? "lightgreen"
-                                  : "darkGrey",
+                                  : theme.palette.secondary.main,
                               }}
                             >
                               {item
@@ -220,6 +224,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
                   time: item.time,
                   status: status,
                   size: size,
+                  type: type,
                 }}
               />
             </Box>
@@ -249,6 +254,8 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
                 {...priceProps}
               />
               <SizesSelect size={size} setSize={setSize} />
+              <TypesSelect type={type} setType={setType} />
+              <StatusSelect status={status} setStatus={setStatus} />
               <Box
                 sx={{
                   display: "flex",
