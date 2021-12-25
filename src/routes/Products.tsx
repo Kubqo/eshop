@@ -12,11 +12,13 @@ import useWindowDimensions from "../hooks/windowDimensions";
 
 const Products = () => {
   usePageTitle("Ponuka");
+
+  const { height } = useWindowDimensions();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<Tree[]>([]);
   const [filterProducts, setFilterProducts] = useState<Types>(Types.TREE);
-  const { height } = useWindowDimensions();
-  console.log(height);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -28,21 +30,6 @@ const Products = () => {
     };
     fetchData();
   }, []);
-
-  // if (isLoading) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         height: height - 140,
-  //         display: "flex",
-  //         alignItems: "center",
-  //         justifyContent: "center",
-  //       }}
-  //     >
-  //       <Loading />
-  //     </Box>
-  //   );
-  // }
 
   return (
     <Box

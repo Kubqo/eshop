@@ -4,7 +4,6 @@ import {
   ImageListItem,
   ImageListItemBar,
   Modal,
-  Skeleton,
   Typography,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
@@ -21,7 +20,6 @@ type Props = {
 const Product = ({ item }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [activePhoto, setActivePhoto] = useState<number>(0);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -140,16 +138,8 @@ const Product = ({ item }: Props) => {
         </Box>
       </Modal>
 
-      <ImageListItem
-        sx={{ width: 200, display: isLoaded ? "block" : "none" }}
-        key={item.name}
-      >
-        <img
-          src={item.images[0]}
-          alt={`${item.name}`}
-          loading="lazy"
-          onLoad={() => setIsLoaded(true)}
-        />
+      <ImageListItem sx={{ width: 200 }} key={item.name}>
+        <img src={item.images[0]} alt={`${item.name}`} loading="eager" />
         <ImageListItemBar
           title={item.name}
           actionIcon={
@@ -163,10 +153,6 @@ const Product = ({ item }: Props) => {
           }
         />
       </ImageListItem>
-
-      {!isLoaded && (
-        <Skeleton variant="rectangular" width={200} height={266.66} />
-      )}
     </>
   );
 };
