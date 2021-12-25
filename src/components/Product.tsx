@@ -1,17 +1,20 @@
 import {
   Box,
+  Button,
   IconButton,
   ImageListItem,
   ImageListItemBar,
   Modal,
   Typography,
 } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
 import { useState } from "react";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
 import { Tree } from "../common/types";
 import theme from "../utils/theme";
+
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 type Props = {
   item: Tree;
@@ -126,6 +129,7 @@ const Product = ({ item }: Props) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-around",
+              alignItems: "center",
               width: "40%",
               textAlign: "center",
               p: 1,
@@ -134,21 +138,38 @@ const Product = ({ item }: Props) => {
             <Typography variant="h3">{item.name}</Typography>
             <Typography variant="body1">{item.description}</Typography>
             <Typography variant="body1">Cena: {item.price} €</Typography>
+            <Button
+              sx={{
+                display: "flex",
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.secondary.main,
+              }}
+              variant="contained"
+              endIcon={<AddShoppingCartIcon />}
+            >
+              Pridať do košíka
+            </Button>
           </Box>
         </Box>
       </Modal>
 
       <ImageListItem sx={{ width: 200 }} key={item.name}>
-        <img src={item.images[0]} alt={`${item.name}`} loading="eager" />
+        <img
+          src={item.images[0]}
+          alt={`${item.name}`}
+          style={{ cursor: "pointer" }}
+          loading="eager"
+          onClick={handleOpen}
+        />
         <ImageListItemBar
           title={item.name}
           actionIcon={
             <IconButton
-              sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+              sx={{ color: theme.palette.primary.light }}
               aria-label={`info about ${item.name}`}
-              onClick={handleOpen}
+              onClick={() => console.log("f")}
             >
-              <InfoIcon />
+              <AddShoppingCartIcon />
             </IconButton>
           }
         />

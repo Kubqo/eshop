@@ -16,7 +16,7 @@ import { signOut } from "../utils/firebase";
 import theme from "../utils/theme";
 import { useState } from "react";
 
-import SearchIcon from "@mui/icons-material/Search";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import ParkIcon from "@mui/icons-material/Park";
 import HomeIcon from "@mui/icons-material/Home";
@@ -24,6 +24,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Cart from "./Cart";
 
 const menuItems = [
   { label: "Domov", to: "/", icon: HomeIcon },
@@ -146,9 +147,7 @@ const AppBar = () => {
           Šidíková
         </Typography>
 
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
+        <Cart />
       </Box>
       <Box
         sx={{
