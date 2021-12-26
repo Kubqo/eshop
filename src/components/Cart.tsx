@@ -4,8 +4,12 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import * as React from "react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
+import { CartContext } from "../hooks/cartContext";
+import { useContext } from "react";
+import CartItem from "./CartItem";
 
 const Cart = () => {
+  const { cart, setCart } = useContext(CartContext);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -41,7 +45,11 @@ const Cart = () => {
           horizontal: "right",
         }}
       >
-        <Typography sx={{ p: 2 }}>Cart is empty</Typography>
+        {cart.length === 0 ? (
+          <Typography sx={{ p: 2 }}>Cart is empty</Typography>
+        ) : (
+          cart.map((item) => <CartItem item={item} />)
+        )}
       </Popover>
     </div>
   );

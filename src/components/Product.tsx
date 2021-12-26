@@ -7,7 +7,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { Tree } from "../common/types";
 import theme from "../utils/theme";
@@ -15,12 +15,14 @@ import theme from "../utils/theme";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { CartContext } from "../hooks/cartContext";
 
 type Props = {
   item: Tree;
 };
 
 const Product = ({ item }: Props) => {
+  const { setCart } = useContext(CartContext);
   const [open, setOpen] = useState<boolean>(false);
   const [activePhoto, setActivePhoto] = useState<number>(0);
   const handleOpen = () => setOpen(true);
@@ -167,7 +169,7 @@ const Product = ({ item }: Props) => {
             <IconButton
               sx={{ color: theme.palette.primary.light }}
               aria-label={`info about ${item.name}`}
-              onClick={() => console.log("f")}
+              onClick={() => setCart((prevItems) => [...prevItems, item])}
             >
               <AddShoppingCartIcon />
             </IconButton>

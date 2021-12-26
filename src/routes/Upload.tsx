@@ -31,6 +31,7 @@ const Upload = () => {
   };
 
   const onSubmit = async () => {
+    // eslint-disable-next-line array-callback-return
     files.map((file) => {
       const imageRef = ref(storage, file!.name);
       console.log(imageRef);

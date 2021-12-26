@@ -16,7 +16,6 @@ import { signOut } from "../utils/firebase";
 import theme from "../utils/theme";
 import { useState } from "react";
 
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import ParkIcon from "@mui/icons-material/Park";
 import HomeIcon from "@mui/icons-material/Home";
@@ -100,7 +99,7 @@ const AppBar = () => {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              {menuItems.map((menuItem, index) => (
+              {menuItems.map((menuItem) => (
                 <ListItem
                   component={Link}
                   to={menuItem.to}
@@ -114,7 +113,7 @@ const AppBar = () => {
               {user && (
                 <>
                   <Divider />
-                  {adminMenuItems.map((menuItem, index) => (
+                  {adminMenuItems.map((menuItem) => (
                     <ListItem
                       component={Link}
                       to={menuItem.to}
