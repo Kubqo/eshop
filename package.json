@@ -1,6 +1,8 @@
 {
-  "name": "eshop",
-  "version": "0.1.0",
+  "name": "eshop-stromceky",
+  "homepage": "http://sidikova.sk",
+  "version": "1.0.0",
+  "description": "Eshop v ktorom nájdete rôzne stromčeky šťastia",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.0",
@@ -15,6 +17,7 @@
     "@types/react": "^17.0.0",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.0",
+    "dotenv": "^14.3.2",
     "firebase": "^9.5.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",

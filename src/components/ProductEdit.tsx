@@ -60,7 +60,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
 
   useEffect(() => {
     setImagesList(item.images);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDragEnd = (result: any) => {

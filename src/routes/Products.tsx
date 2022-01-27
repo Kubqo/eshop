@@ -2,20 +2,19 @@ import { Box, Grid, Typography } from "@mui/material";
 import usePageTitle from "../hooks/usePageTitle";
 import { productsCollection } from "../utils/firebase";
 import { getDocs } from "firebase/firestore";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Loading from "../components/Loading";
 import Product from "../components/Product";
 import { Tree } from "../common/types";
 import ProductsFilter from "../components/ProductsFilter";
 import { Types } from "../common/enums";
 import useWindowDimensions from "../hooks/windowDimensions";
-import { CartContext } from "../hooks/cartContext";
+// import { CartContext } from "../hooks/cartContext";
 
 const Products = () => {
   usePageTitle("Ponuka");
 
   const { height } = useWindowDimensions();
-
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<Tree[]>([]);

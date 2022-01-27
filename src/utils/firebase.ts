@@ -16,16 +16,20 @@ import {
 import { getStorage } from "firebase/storage";
 import { Tree } from "../common/types";
 
+require("dotenv").config();
+
 // Initialize Firebase
 const firebaseApp = initializeApp({
-  apiKey: "AIzaSyCf7911O_8uGwVpChnaobl79Tnuh6DozcA",
-  authDomain: "sidikova-eshop.firebaseapp.com",
-  projectId: "sidikova-eshop",
-  storageBucket: "sidikova-eshop.appspot.com",
-  messagingSenderId: "356592056634",
-  appId: "1:356592056634:web:9b2d1224b627714e387803",
-  measurementId: "G-XS4T1BNRBJ",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 });
+
+console.log(process.env.REACT_APP_API_KEY);
 
 // Authentication
 const auth = getAuth();

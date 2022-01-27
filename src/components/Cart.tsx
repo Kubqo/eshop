@@ -9,7 +9,7 @@ import { useContext } from "react";
 import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
