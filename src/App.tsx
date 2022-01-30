@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "./hooks/cartContext";
 
+import "./app.css";
+
 const App = () => {
   return (
     <CartProvider>

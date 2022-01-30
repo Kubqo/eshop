@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Divider,
   Drawer,
   IconButton,
@@ -76,7 +77,7 @@ const AppBar = () => {
     };
 
   return (
-    <>
+    <Box sx={{ height: "15%" }}>
       <Box
         sx={{
           backgroundColor: theme.palette.primary.main,
@@ -87,7 +88,17 @@ const AppBar = () => {
           paddingX: 2,
         }}
       >
-        <IconButton onClick={toggleDrawer(true)}>
+        <IconButton
+          onClick={toggleDrawer(true)}
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              display: "block",
+            },
+            [theme.breakpoints.up("md")]: {
+              display: "none",
+            },
+          }}
+        >
           <MenuIcon />
         </IconButton>
 
@@ -146,6 +157,28 @@ const AppBar = () => {
           Šidíková
         </Typography>
 
+        <Box
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              display: "none",
+            },
+            [theme.breakpoints.up("lg")]: {
+              display: "block",
+            },
+          }}
+        >
+          {menuItems.map((menuItem) => (
+            <Button
+              sx={{ mx: 1 }}
+              component={Link}
+              to={menuItem.to}
+              key={menuItem.label}
+            >
+              {menuItem.label}
+            </Button>
+          ))}
+        </Box>
+
         <Cart />
       </Box>
       <Box
@@ -162,7 +195,7 @@ const AppBar = () => {
           {routes[location.pathname as routesType]}
         </Typography>
       </Box>
-    </>
+    </Box>
   );
 };
 

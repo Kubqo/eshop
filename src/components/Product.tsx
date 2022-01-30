@@ -5,9 +5,10 @@ import {
   ImageListItem,
   ImageListItemBar,
   Modal,
+  Skeleton,
   Typography,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Tree } from "../common/types";
 import theme from "../utils/theme";
@@ -16,15 +17,26 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { CartContext } from "../hooks/cartContext";
+import { toast } from "react-toastify";
 
 type Props = {
   item: Tree;
 };
 
+const checkImage = (path: string) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(path);
+    img.onerror = () => reject();
+    img.src = path;
+  });
+
 const Product = ({ item }: Props) => {
   const { setCart } = useContext(CartContext);
   const [open, setOpen] = useState<boolean>(false);
   const [activePhoto, setActivePhoto] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -43,6 +55,21 @@ const Product = ({ item }: Props) => {
       setActivePhoto(activePhoto - 1);
     }
   };
+
+  useEffect(() => {
+    const loadImages = Promise.all(item.images.map(checkImage)).then(
+      () => setIsLoading(false),
+      () => console.error("could not load images")
+    );
+
+    toast.promise(loadImages, {
+      error: "Chyba pri načítávaní zdrojov 🤯",
+    });
+  }, [item]);
+
+  if (isLoading) {
+    return <Skeleton variant="rectangular" width={200} height={266} />;
+  }
 
   return (
     <>

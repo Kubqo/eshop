@@ -16,13 +16,12 @@ const Products = () => {
 
   const { height } = useWindowDimensions();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<Tree[]>([]);
   const [filterProducts, setFilterProducts] = useState<Types>(Types.TREE);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       const querySnapshot = await getDocs(productsCollection);
       querySnapshot.forEach((doc) => {
         setProducts((prevProducts) => [...prevProducts, doc.data()]);

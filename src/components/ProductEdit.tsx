@@ -151,6 +151,7 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
               justifyContent: "center",
               alignItems: "center",
               // backgroundColor: "#3b474e",
+              border: "1px solid red",
             }}
           >
             <DragDropContext onDragEnd={onDragEnd}>
@@ -212,9 +213,19 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
               width: "100%",
               textAlign: "center",
               p: 1,
+              border: "1px solid blue",
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh",
+                width: "100%",
+                border: "1px solid green",
+              }}
+            >
               <Product
                 item={{
                   id: item.id,
@@ -234,23 +245,25 @@ const ProductEdit = ({ item, products, setProducts }: Props) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                maxHeight: "100vh",
+                height: "100vh",
                 overflowY: "scroll",
+                // overflowX: "hidden",
+                border: "1px solid green",
               }}
             >
               <TextField
-                sx={{ width: 300, mt: 5 }}
+                sx={{ width: 300, mt: 5, mx: 10 }}
                 label="Názov"
                 {...nameProps}
               />
               <TextField
                 multiline
-                sx={{ width: 300, mt: 5 }}
+                sx={{ width: 300, mt: 5, mx: 10 }}
                 label="Popis"
                 {...descriptionProps}
               />
               <TextField
-                sx={{ width: 300, mt: 5 }}
+                sx={{ width: 300, mt: 5, mx: 10 }}
                 label="Cena"
                 {...priceProps}
               />

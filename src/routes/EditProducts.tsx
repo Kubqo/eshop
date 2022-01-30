@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import usePageTitle from "../hooks/usePageTitle";
 import { productsCollection } from "../utils/firebase";
 import { getDocs } from "firebase/firestore";
@@ -10,6 +10,15 @@ import { Tree } from "../common/types";
 import { Types } from "../common/enums";
 import useWindowDimensions from "../hooks/windowDimensions";
 import ProductsFilter from "../components/ProductsFilter";
+
+const checkImage = (path: string) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(path);
+    img.onerror = () => reject();
+
+    img.src = path;
+  });
 
 const EditProducts = () => {
   usePageTitle("Ponuka");
@@ -24,10 +33,15 @@ const EditProducts = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const querySnapshot = await getDocs(productsCollection);
+      let images: string[] = [];
       querySnapshot.forEach((doc) => {
         setProducts((prevProducts) => [...prevProducts, doc.data()]);
+        doc.data().images.map((image) => images.push(image));
       });
-      setIsLoading(false);
+      Promise.all(images.map(checkImage)).then(
+        () => setIsLoading(false),
+        () => console.error("could not load images")
+      );
     };
     fetchData();
   }, []);
@@ -35,7 +49,7 @@ const EditProducts = () => {
   return (
     <Box
       sx={{
-        height: height - 140,
+        // height: height - 140,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -47,16 +61,22 @@ const EditProducts = () => {
         setFilterProducts={setFilterProducts}
       />
       {isLoading ? (
-        <Box
-          sx={{
-            height: height - 140,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Loading />
-        </Box>
+        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+          <Grid item xs={12}>
+            <Grid container justifyContent="center" spacing={2}>
+              {Array.from(Array(20).keys()).map((item) => (
+                <Grid
+                  sx={{ display: "flex" }}
+                  justifyContent="center"
+                  key={item}
+                  item
+                >
+                  <Skeleton variant="rectangular" width={200} height={266} />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
       ) : (
         <>
           {products.filter((p) => p.type === filterProducts).length === 0 ? (
